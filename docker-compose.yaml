@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  etl_pipeline:
+    build: .
+    container_name: etl_container
+    ports:
+      - "8080:8080"
+    environment:
+      - DATA_URL=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-01.parquet
+      - TZ=Asia/Jakarta
+    # (Opsional) file log & data hasil ETL langsung muncul di laptop:
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
