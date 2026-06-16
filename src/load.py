@@ -33,13 +33,13 @@ class Load(DataLoad):
             if len(df.columns) > min_number_of_columns:
                 file_baru = os.path.join(output_path, "mart_yellow_tripdata.csv")
                 df.to_csv(file_baru, index=False)
-                print(f"-> Berhasil menyimpan Parquet: {file_baru}")
+                print(f"-> Berhasil menyimpan File: {file_baru}")
             # else:
             #     file_baru = os.path.join(output_path, "mart_taxi_zone_lookup.csv")
             #     df.to_csv(file_baru, index=False)
             #     print(f"-> Berhasil menyimpan CSV: {file_baru}")
 
-        print("\nLoad ke data mart berhasil.")
+        print("\nLoad ke data mart berhasil.\n")
         return self.mart_dfs
 
     def data_clean(self, df):
@@ -75,11 +75,11 @@ class Load(DataLoad):
                         df_valid.to_csv(file_valid, index=False)
                     else:
                         df_valid.to_csv(file_valid, mode='a', header=False, index=False)  
-                    print(f"   [VALID] Indeks-{i}: {len(df_valid)} baris berhasil disimpan ke: {file_valid}")
+                    print(f"   [VALID] Indeks-{i}: {len(df_valid)} baris data Valid berhasil disimpan ke: {file_valid}")
                 
                 if not df_invalid.empty:
                     all_invalid_rows.append(df_invalid)
-                    print(f"   [INVALID] Indeks-{i}: Terdeteksi {len(df_invalid)} baris kotor (ditampung sementara).")
+                    print(f"   [INVALID] Indeks-{i}: Terdeteksi {len(df_invalid)} baris data Invalid ditampung sementara.")
                 
                 self.transformed_dfs.append(df_evaluated)
 
@@ -89,8 +89,8 @@ class Load(DataLoad):
             
             # Simpan sekaligus jadi satu file csv
             df_all_invalid.to_csv(file_invalid_final, index=False)
-            print(f"\n   [SUKSES] Total {len(df_all_invalid)} baris kotor BERHASIL disatukan ke: {file_invalid_final}")
+            print(f"\n   [SUKSES] Total {len(df_all_invalid)} baris data Invalid BERHASIL disatukan ke: {file_invalid_final}\n")
         else:
-            print("\n   [INFO] Bersih total! Tidak ditemukan data kotor sama sekali.")
+            print("\n   [INFO] Bersih total! Tidak ditemukan data kotor sama sekali.\n")
             
         return self.transformed_dfs

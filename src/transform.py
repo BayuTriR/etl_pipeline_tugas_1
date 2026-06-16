@@ -30,7 +30,7 @@ class DataTransformation(ABC):
         min_number_of_columns = min(len(df.columns) for df in self.list_of_df)
 
         for i, df in enumerate(self.list_of_df):
-            print(f"\nMengubah nama kolom DataFrame indeks ke-{i}...")
+            print(f"\nMelakukan transformasi data pada DataFrame indeks ke-{i}...")
 
             df.columns = [self.camel_to_snake(col) for col in df.columns]
 
@@ -40,7 +40,7 @@ class DataTransformation(ABC):
 
             self.save_data(df, output_path, min_number_of_columns)
         
-        print("\nSemua kolom spesifik berhasil diganti.")
+        print("\nSemua transformasi data berhasil.")
         return self.transformed_dfs
     
 class Transformation(DataTransformation):

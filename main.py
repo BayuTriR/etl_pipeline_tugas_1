@@ -46,8 +46,8 @@ if __name__ == "__main__":
             df = extraction.extract_data()
             data_extracted.append(df)
             print("Proses extract berhasil")
-            print(f"[HEADER] Kolom pada {config['nama']}:")
-            print(list(df.columns))
+            # print(f"[HEADER] Kolom pada {config['nama']}:")
+            # print(list(df.columns))
         
         except Exception as e:
             print(f"Gagal mengekstrak {config['path']}. Error: {e}\n")
@@ -84,12 +84,12 @@ if __name__ == "__main__":
         
         log_message("Transform completed")
 
-        print("\nKolom CSV setelah transform:")
-        print(list(data_transformed[0].columns))
+        # print("\nKolom CSV setelah transform:")
+        # print(list(data_transformed[0].columns))
        
-        print("\nKolom Parquet setelah transform:")
-        print(list(data_transformed[1].columns))
-        print(data_transformed[1].head(3))
+        # print("\nKolom Parquet setelah transform:")
+        # print(list(data_transformed[1].columns))
+        # print(data_transformed[1].head(3))
 
         print("\n--- PROSES TRANSFORM SELESAI ---\n\n")
         
@@ -102,14 +102,13 @@ if __name__ == "__main__":
 
         loader = Load(data_transformed)
         data_mart = loader.load_to_mart(output_path="data/mart")
-
-        print("\n")
+        
         log_message("Report completed\n")
 
         log_message("Running data quality check\n")
 
         data_clean = loader.load_to_clean(output_path="data/mart_clean")
-
+        
         log_message("Data quality check completed")
 
         print("\n--- PROSES LOAD SELESAI ---\n")
