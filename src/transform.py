@@ -100,7 +100,7 @@ class Transformation(DataTransformation):
         for col in date_cols:
             if col in df.columns:
                 if pd.api.types.is_datetime64_any_dtype(df[col]):
-                    print(f"-> Kolom {col} sudah bertipe DATETIME. Melewati konversi...")
+                    print(f"-> Kolom {col} ditemukan & bertipe DATETIME. Tidak dilakukan perubahan tipe data...")
                     continue
                 print(f"-> Kolom {col} ditemukan. Mengubah tipe data {col} ke DATETIME...")
                 df[col] = pd.to_datetime(df[col])
@@ -113,7 +113,7 @@ class Transformation(DataTransformation):
         for col in numeric_cols:
             if col in df.columns:
                 if pd.api.types.is_float_dtype(df[col]):
-                    print(f"-> Kolom {col} sudah bertipe FLOAT. Melewati konversi...")
+                    print(f"-> Kolom {col} ditemukan & sudah bertipe FLOAT. Tidak dilakukan perubahan tipe data...")
                     continue
                 print(f"-> Kolom {col} ditemukan. Mengubah tipe data {col} ke FLOAT...")
                 df[col] = df[col].astype(float)

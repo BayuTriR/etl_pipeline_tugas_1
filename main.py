@@ -104,7 +104,7 @@ if __name__ == "__main__":
         if df_trip_transformed is not None:
             transformation.inspect_dataframe(df=df_trip_transformed, stage="Setelah Transform")
         else:
-            print("Data Trip tidak ditemukan")
+            print("\nTipe data sudah sesuai\n")
         
         log_message("Transform completed")
 
