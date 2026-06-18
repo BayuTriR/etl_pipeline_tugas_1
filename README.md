@@ -4,15 +4,15 @@ Proyek ini adalah sebuah pipeline ETL (Extract, Transform, Load) otomatis yang d
 
 Proyek ini telah dikontainerisasi menggunakan **Docker** dan **Docker Compose** untuk memastikan aplikasi dapat berjalan di lingkungan (*environment*) mana saja secara konsisten tanpa kendala ketergantungan OS.
 
-## 📋 Daftar Isi
-- [Fitur Utama](#-fitur-utama)
-- [Struktur Proyek](#-struktur-proyek)
-- [Teknologi & Dependensi](#-teknologi--dependensi)
-- [Prasyarat Sistem](#-prasyarat-sistem)
-- [Cara Penggunaan (Docker)](#-cara-penggunaan-docker)
-- [Detail Alur Kerja ETL](#-detail-alur-kerja-etl)
+## Daftar Isi
+- [Fitur Utama](#fitur-utama)
+- [Struktur Proyek](#struktur-proyek)
+- [Teknologi & Dependensi](#teknologi--dependensi)
+- [Prasyarat Sistem](#prasyarat-sistem)
+- [Cara Penggunaan (Docker)](#cara-penggunaan-docker)
+- [Detail Alur Kerja ETL](#detail-alur-kerja-etl)
 
-## ✨ Fitur Utama
+## Fitur Utama
 * **Kontainerisasi Penuh:** Berjalan di dalam Docker untuk isolasi *environment*.
 * **Automasi Logging & Error Handling:** Menggunakan Shell Script Linux (`etl_pipeline.sh`) dengan parameter `set -eo pipefail` untuk memantau jalannya program secara *real-time* dan merekam seluruh *output* ke dalam berkas log dengan datetime (WIB).
 * **Integrasi Docker Environment Variable Dinamis:** Parameter jalur unduhan data (*data URL*) ditarik secara dinamis melalui *Environment Variable* pada Docker Compose, menghindari penulisan kode kaku (*hardcoded*) dan mempermudah penggantian sumber data secara instan.
@@ -26,7 +26,7 @@ Proyek ini telah dikontainerisasi menggunakan **Docker** dan **Docker Compose** 
 * **Imputasi Nilai Kosong Aman (*Data Quality Imputation*):** Memiliki fungsi otomatis untuk mendeteksi data yang bolong (`NaN`) dan mengisinya dengan nilai aman (`-999` untuk kolom angka dan `'Unknown'` untuk kolom teks) demi menjaga integritas data saat dianalisis.
 * **Inspeksi Skema Terstruktur:** Menyediakan fungsi `inspect_dataframe` untuk melakukan audit/pencatatan tipe data (*logging data types*) secara transparan pada terminal sebelum dan sesudah data dimodifikasi.
 
-## 📁 Struktur Proyek
+## Struktur Proyek
 ```text
 Tugas_1/
 ├── data/                       # Penyimpanan data (Volume terikat, diabaikan oleh Git)
@@ -48,18 +48,18 @@ Tugas_1/
 └── requirement.txt             # Kebutuhan library Python (Pandas, PyArrow, Requests)
 ```
 
-## 🛠️ Teknologi & Dependensi
+## Teknologi & Dependensi
 Core: Python 3.10 (Base Image: python:3.10-slim)
 Data Processing: Pandas, PyArrow
 Networking: Requests
 Orchestration & Tools: Docker, Docker Compose, Linux Bash Shell Script
 
-## 💻 Prasyarat Sistem
+## Prasyarat Sistem
 Sebelum menjalankan proyek ini, pastikan komputer Anda sudah terinstal:
 Docker Desktop (termasuk Docker Compose)
 Git Bash (jika menggunakan OS Windows untuk eksekusi terminal)
 
-## 🚀 Cara Penggunaan (Docker)
+## Cara Penggunaan (Docker)
 1. Klon Repositori Ini
     ```bash
     git clone [https://github.com/BayuTriR/etl_pipeline_tugas_1.git](https://github.com/BayuTriR/etl_pipeline_tugas_1.git)
@@ -71,12 +71,11 @@ Git Bash (jika menggunakan OS Windows untuk eksekusi terminal)
     File Log: Periksa folder ./logs/ di laptop Anda untuk melihat rekam jejak jalannya pipa data secara mendetail.
     File Data: Periksa sub-folder di dalam ./data/ untuk melihat berkas mentah hasil ekstraksi, data antara (staging), hingga data analitik siap pakai (mart).
 
-## ⚙️ Detail Alur Kerja ETL
+## Detail Alur Kerja ETL
 1. Tahap Extract
     Program mengunduh dua jenis dataset utama menggunakan metode streaming chunk langsung dari URL yang disediakan:
     Taxi Zone Lookup (Format .csv) -> Disimpan di ./data/extraction/taxi_zone_lookup.csv
     Yellow Tripdata (Format .parquet) -> Disimpan di ./data/extraction/yellow_tripdata_2026-01.parquet
-
 2. Tahap Transform
     Jika semua data berhasil dieksekusi tanpa eror, modul transform.py berbasis kelas OOP akan melakukan manipulasi data:
     Melakukan inspeksi tipe data awal sebelum dimodifikasi.
@@ -85,7 +84,6 @@ Git Bash (jika menggunakan OS Windows untuk eksekusi terminal)
     Menghitung nilai kolom baru trip_duration_minutes dari selisih waktu jemput (pickup) dan antar (dropoff).
     Melakukan operasi .merge() (data lookup) untuk menggabungkan data perjalanan dengan referensi zona taksi.
     Melakukan pengecekan akhir tipe data pasca-transformasi.
-
 3. Tahap Load
     Data yang sudah bersih diekspor oleh modul load.py ke folder ./data/transformed/ (sebagai staging area), lalu diintegrasikan lebih lanjut ke folder ./data/mart/ dan ./data/mart_clean/ setelah lolos proses pengujian kualitas data (data quality check).
     Proyek ini dikembangkan sebagai bagian dari Tugas Portofolio Data Engineering.
