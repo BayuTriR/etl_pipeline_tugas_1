@@ -15,10 +15,16 @@ Proyek ini telah dikontainerisasi menggunakan **Docker** dan **Docker Compose** 
 ## ✨ Fitur Utama
 * **Kontainerisasi Penuh:** Berjalan di dalam Docker untuk isolasi *environment*.
 * **Automasi Logging & Error Handling:** Menggunakan Shell Script Linux (`etl_pipeline.sh`) dengan parameter `set -eo pipefail` untuk memantau jalannya program secara *real-time* dan merekam seluruh *output* ke dalam berkas log dengan datetime (WIB).
-* **Konfigurasi Dinamis:** Menggunakan struktur *array-of-objects* untuk mempermudah penambahan sumber data baru lewat *environment variable* pada Docker Compose.
-* **Ekstraksi Tangguh:** Dilengkapi blok `try-except` untuk menangani kegagalan unduhan jaringan tanpa menghentikan seluruh program.
+* **Integrasi Docker Environment Variable Dinamis:** Parameter jalur unduhan data (*data URL*) ditarik secara dinamis melalui *Environment Variable* pada Docker Compose, menghindari penulisan kode kaku (*hardcoded*) dan mempermudah penggantian sumber data secara instan.
+* **Manajemen Penyimpanan Berkelanjutan (Docker Volumes Binding):** Hasil ekstraksi data dan berkas automasi log otomatis tersinkronisasi ke penyimpanan lokal komputer melalui *bind mounts*, memastikan data tidak hilang saat kontainer dihancurkan (*stateless container*).
+* **Arsitektur Modular Berbasis Objek & Polimorfisme (OOP):** Pemisahan fungsi ETL yang bersih ke dalam modul-modul terpisah menggunakan kelas abstrak (`DataTransformation` via ABC) dan pewarisan kelas (`Transformation`), memastikan kode bersifat *reusable* dan mudah dikembangkan untuk jangka panjang.
+* **Ekstraksi Tangguh:** Dilengkapi blok `try-except` untuk menangani kegagalan unduhan jaringan tanpa menghentikan seluruh program secara mendadak.
 * **Standardisasi Teks:** Mengubah penamaan kolom bergaya `camelCase` menjadi `snake_case` (misal: `tpepPickupDatetime` menjadi `tpep_pickup_datetime`).
-* **Inspeksi Tipe Data:** Melakukan cetak log tipe data (*logging data types*) sebelum dan sesudah transformasi untuk verifikasi instan.
+* **Kalkulasi Bisnis Turunan (*Feature Engineering*):** * Menghitung durasi perjalanan taksi (`trip_duration_minutes`) dari selisih waktu jemput dan antar.
+  * Mengekstraksi komponen waktu menjadi `pickup_date`, `pickup_day_name`, penanda akhir pekan (`is_weekend`), serta kategorisasi waktu operasional (`time_periode` seperti *Late Night, Morning, Afternoon*, dll).
+* **Penyelarasan Kodefikasi Data (*Data Mapping & Enrichment*):** Mengubah kode angka mentah menjadi teks deskriptif pada kolom `payment_type` dan `store_and_fwd_flag` agar data lebih mudah dipahami secara bisnis, serta melakukan otomatisasi *left join* dengan data referensi wilayah taksi (*Taxi Zone Lookup*).
+* **Imputasi Nilai Kosong Aman (*Data Quality Imputation*):** Memiliki fungsi otomatis untuk mendeteksi data yang bolong (`NaN`) dan mengisinya dengan nilai aman (`-999` untuk kolom angka dan `'Unknown'` untuk kolom teks) demi menjaga integritas data saat dianalisis.
+* **Inspeksi Skema Terstruktur:** Menyediakan fungsi `inspect_dataframe` untuk melakukan audit/pencatatan tipe data (*logging data types*) secara transparan pada terminal sebelum dan sesudah data dimodifikasi.
 
 ## 📁 Struktur Proyek
 ```text

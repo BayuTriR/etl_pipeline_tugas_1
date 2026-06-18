@@ -19,7 +19,7 @@ class DataExtraction(ABC):
         response = requests.get(self.path, stream=True)
 
         if response.status_code != 200:
-            raise ConnectionError(f"Gagal download! HTTP Status: {response.status_code}")
+            raise ConnectionError(f"Gagal download FILE. Status: {response.status_code}")
         
         with open(self.path_data, "wb") as f:
             for file in response.iter_content(chunk_size=8192):

@@ -9,7 +9,10 @@ class DataTransformation(ABC):
         self.transformed_dfs = []
 
     def camel_to_snake(self, column_name):
-        return re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', column_name).lower().replace('__', '_')
+        string = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', column_name)
+        string = re.sub('(.)([0-9]+)', r'\1_\2', column_name)
+        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower()
+        # return re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', column_name).lower().replace('__', '_')
     
     def checking_output_folder(self, output_path: str):
         if output_path and not os.path.exists(output_path):
@@ -96,6 +99,9 @@ class Transformation(DataTransformation):
         date_cols = ["tpep_pickup_datetime", "tpep_dropoff_datetime"]
         for col in date_cols:
             if col in df.columns:
+                if pd.api.types.is_datetime64_any_dtype(df[col]):
+                    print(f"-> Kolom {col} sudah bertipe DATETIME. Melewati konversi...")
+                    continue
                 print(f"-> Kolom {col} ditemukan. Mengubah tipe data {col} ke DATETIME...")
                 df[col] = pd.to_datetime(df[col])
             else:
@@ -106,6 +112,9 @@ class Transformation(DataTransformation):
         numeric_cols = ["fare_amount", "tip_amount", "total_amount"]
         for col in numeric_cols:
             if col in df.columns:
+                if pd.api.types.is_float_dtype(df[col]):
+                    print(f"-> Kolom {col} sudah bertipe FLOAT. Melewati konversi...")
+                    continue
                 print(f"-> Kolom {col} ditemukan. Mengubah tipe data {col} ke FLOAT...")
                 df[col] = df[col].astype(float)
             else:
@@ -142,13 +151,13 @@ class Transformation(DataTransformation):
         return df
     
     def periode(self, periode):
-        if 0 >= periode <= 5:
+        if 0 <= periode <= 5:
             return "Late Night"
-        elif 5 > periode <= 10:
+        elif 5 < periode <= 10:
             return "Morning"
-        elif 10 > periode <= 15:
+        elif 10 < periode <= 15:
             return "Afternoon"
-        elif 16 > periode <= 19:
+        elif 15 < periode <= 19:
             return "Evening Rush"
         else:
             return "Night"

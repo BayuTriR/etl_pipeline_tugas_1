@@ -7,7 +7,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DATA_URL=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-01.parquet
+      - DATA_URL_ZONE=https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
+      - DATA_URL_TRIP=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-01.parquet
       - TZ=Asia/Jakarta
     # (Opsional) file log & data hasil ETL langsung muncul di laptop:
     volumes:

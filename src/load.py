@@ -34,10 +34,6 @@ class Load(DataLoad):
                 file_baru = os.path.join(output_path, "mart_yellow_tripdata.csv")
                 df.to_csv(file_baru, index=False)
                 print(f"-> Berhasil menyimpan File: {file_baru}")
-            # else:
-            #     file_baru = os.path.join(output_path, "mart_taxi_zone_lookup.csv")
-            #     df.to_csv(file_baru, index=False)
-            #     print(f"-> Berhasil menyimpan CSV: {file_baru}")
 
         print("\nLoad ke data mart berhasil.\n")
         return self.mart_dfs
