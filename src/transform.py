@@ -9,10 +9,12 @@ class DataTransformation(ABC):
         self.transformed_dfs = []
 
     def camel_to_snake(self, column_name):
+        # Menambahkan garis bawah tepat sebelum setiap karakter huruf besar yang diikuti oleh satu atau lebih karakter huruf kecil, kecuali di awal string.
         string = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', column_name)
+        # Menambahkan garis bawah tepat sebelum setiap kelompok angka berurutan, kecuali di awal string.
         string = re.sub('(.)([0-9]+)', r'\1_\2', column_name)
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower()
-        # return re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', column_name).lower().replace('__', '_')
+        # Menambahkan garis bawah tepat sebelum karakter huruf besar apa pun yang memiliki karakter huruf kecil atau angka di depannya, dan mengubah seluruh string menjadi huruf kecil lalu mengembalikan nilai.
+        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', column_name).lower()
     
     def checking_output_folder(self, output_path: str):
         if output_path and not os.path.exists(output_path):
@@ -47,7 +49,7 @@ class DataTransformation(ABC):
         return self.transformed_dfs
     
 class Transformation(DataTransformation):
-    def __init__(self, list_of_df: list, df_lookup: pd.DataFrame):
+    def __init__(self, list_of_df: list, df_lookup):
         super().__init__(list_of_df)
         # Samakan nama kolom lookup menjadi snake_case agar match saat join
         self.df_lookup = df_lookup.copy()

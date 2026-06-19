@@ -10,11 +10,11 @@ COPY requirement.txt .
 # Install library Python
 RUN pip install --no-cache-dir -r requirement.txt
 
-# 6. Copy seluruh source code dari laptop ke dalam container
+# Copy seluruh source code dari laptop ke dalam container
 COPY . .
 
-# 7. Dokumentasi port yang digunakan aplikasi
+# Dokumentasi port yang digunakan aplikasi
 EXPOSE 8080
 
-# 8. Perintah untuk menjalankan script utama ETL Anda
+# Perintah untuk menjalankan script utama ETL Anda
 CMD ["bash", "etl_pipeline.sh"]
